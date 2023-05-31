@@ -11,21 +11,22 @@ fi
 #surinkti reikalingus duomenis 
 DEFAULT_SERVICE_ID="datacollector"
 
-echo "Enter service ID for datacollector ($DEFAULT_SERVICE_ID):"
-read -rp SERVICE_ID
+read -rp "Enter service ID for datacollector ($DEFAULT_SERVICE_ID):" SERVICE_ID
 
-echo "Enter datacollector push token:"
-read -rp PUSH_TOKEN
+read -rp "Enter datacollector push token:" PUSH_TOKEN
 if [[ -z "$PUSH_TOKEN" ]]; then
     echo "Push token is required"
     exit 1
 fi
 
-echo "Enter datahub token:"
-read -rp DATAHUB_TOKEN
+read -rp "Enter datahub token:" DATAHUB_TOKEN
 if [[ -z "$DATAHUB_TOKEN" ]]; then
     echo "Datahub token not set"
 fi
+
+DEFAULT_EASAS_ADDRESS="https://easas.energyadvice.lt/EASAS/rest"
+
+read -rp "Enter used easas addres ($DEFAULT_EASAS_ADDRESS):" EASAS_ADDRESS
 
 
 #-----------------------------------------------------------------------------------------------------------------------
@@ -68,13 +69,19 @@ git clone https://github.com/energy-advice/datacollector-template.git ./
 
 # datacollector.properties ---SERVICE_ID_NOT_SET---
 # datacollector.properties ---TOKEN_NOT_SET---
+# datacollector.properties lt.energyadvice.datacollector.remoteServiceUrl
 # .env ---DATAHUB_TOKENAS---
 
 sed -i "s/---SERVICE_ID_NOT_SET---/${SERVICE_ID:-$DEFAULT_SERVICE_ID}/" datacollector.properties
 sed -i "s/---TOKEN_NOT_SET---/${PUSH_TOKEN}/" datacollector.properties
+if [[ -n "$EASAS_ADDRESS" ]]; then
+  sed -i "s|#lt.energyadvice.datacollector.remoteServiceUrl=$DEFAULT_EASAS_ADDRESS|lt.energyadvice.datacollector.remoteServiceUrl=$EASAS_ADDRESS|" datacollector.properties
+fi
+
 if [[ -n "$DATAHUB_TOKEN" ]]; then
     sed -i "s/---DATAHUB_TOKENAS---/${DATAHUB_TOKEN}/" .env
 fi
+
 
 
 REALUSER="${SUDO_USER:-$USER}"
@@ -90,7 +97,7 @@ choice="${choice:-N}"  # Set default value to "Y" if empty
 
 if [[ $choice =~ ^[Yy]$ ]]; then
     groupadd docker
-    usermod -aG docker $USER
+    usermod -aG docker "$USER"
     newgrp docker
 fi
 
