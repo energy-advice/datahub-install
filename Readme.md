@@ -27,7 +27,7 @@ kurį galima gauti EASAS vartotojų valdymo lange, ant vartotojo paspaudus deši
 "JWT generation".
 Būtina pasirinkti teisę `DATASET_DATA_PUSH` ir nustatyti atitinkamą `TTL` (time to live).
 * Jei kompanija nėra pirmame EASAS serveryje pakeisti `lt.energyadvice.datacollector.remoteServiceUrl` vertę
-į atitinkamą
+į atitinkamą (formatas: `https://easas.energyadvice.lt/EASAS/rest`)
 
 `.env`:
 * `---DATAHUB_TOKENAS---` pakeisti į datahub tokeną, kuris gaunamas EASAS Datahubs skiltyje paspaudus `Generate`
