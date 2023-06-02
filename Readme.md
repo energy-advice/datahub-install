@@ -12,11 +12,12 @@ Oficiali instrukcija: https://docs.docker.com/engine/install/linux-postinstall/
 
 3. Parsisiųsti `datahub` `docker-compose` šabloną į instaliacijos aplanką (įprastai `/opt/datahub`):
 
-
+```
     cd /opt
     mkdir datahub
     cd datahub
     git clone https://github.com/energy-advice/datacollector-template.git ./ 
+```
 
 4. Užpildyti reikalingus laukus konfigūracijos failuose:
 
