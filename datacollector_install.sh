@@ -92,6 +92,8 @@ chown "$REALUSER:$REALUSER" ./*
 
 docker compose pull
 
+set +e
+
 read -rp "Setup docker for access without sudo? (y/N) " choice
 choice="${choice:-N}"  # Set default value to "Y" if empty
 
