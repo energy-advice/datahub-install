@@ -92,16 +92,16 @@ chown "$REALUSER:$REALUSER" ./*
 
 docker compose pull
 
+read -rp "Setup docker for access without sudo? (Y/n) " choice
+choice="${choice:-Y}"  # Set default value to "Y" if empty
+
 set +e
-
-read -rp "Setup docker for access without sudo? (y/N) " choice
-choice="${choice:-N}"  # Set default value to "Y" if empty
-
 if [[ $choice =~ ^[Yy]$ ]]; then
     groupadd docker
     usermod -aG docker "$USER"
     newgrp docker
 fi
+set -e
 
 
 read -rp "Installation complete, start datahub? (Y/n) " choice
